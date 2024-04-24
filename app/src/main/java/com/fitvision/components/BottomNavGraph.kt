@@ -48,9 +48,7 @@ fun BottomNavGraph(navController: NavHostController) {
             val exerciseId = backStackEntry.arguments?.getInt("exerciseId") ?: -1
             val exercise = exerciseViewModel.getExerciseById(exerciseId)
             if (exercise != null) {
-                DetailScreen(exercise)
-            } else {
-                Text("")
+                DetailScreen(navController, exercise) // Now passing navController as well
             }
         }
     }

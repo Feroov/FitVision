@@ -1,5 +1,9 @@
 package com.fitvision.ui.screens
 
+import com.fitvision.R
+import com.fitvision.components.BottomBarScreen
+import com.fitvision.models.Exercise
+import com.fitvision.models.ExerciseViewModel
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -23,6 +27,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,28 +41,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.fitvision.R
-import com.fitvision.components.BottomBarScreen
-import com.fitvision.models.Exercise
-import com.fitvision.models.ExerciseViewModel
+import com.fitvision.util.YouTubeVideoPlayer
 import kotlinx.coroutines.delay
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.layout.ContentScale
-
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
+
     var searchText by remember { mutableStateOf("") }
     val exercises by viewModel.exercises.observeAsState(initial = emptyList())
 
-    // Sample list of image resource IDs for the carousel
     val imageResourceIds = listOf(
         R.drawable.image1,
         R.drawable.image2,
@@ -68,7 +73,7 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
     // Index to keep track of the current image in the carousel
     var currentIndex by remember { mutableStateOf(0) }
 
-    // Function to update the current index in the carousel
+    // Update the current index in the carousel
     LaunchedEffect(Unit) {
         while (true) {
             delay(3000)
@@ -99,7 +104,7 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
                 .size(width = 100.dp, height = 90.dp)
         )
 
-        // Carousel of images with consistent sliding transitions
+        // Carousel of images
         AnimatedContent(
             targetState = imageResourceIds[currentIndex],
             transitionSpec = {
@@ -212,18 +217,98 @@ fun ExerciseCard(exercise: Exercise, navigateToDetail: () -> Unit) {
 }
 
 @Composable
-fun DetailScreen(exercise: Exercise) {
+fun DetailScreen(navController: NavHostController, exercise: Exercise) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .background(Color(0xFF212121))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.back),
+                    contentDescription = "Back",
+                    tint = Color.White
+                )
+            }
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = exercise.name,
+                color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(3f)
+            )
+            Spacer(Modifier.weight(1f))
+            IconButton(onClick = { /* handle right icon click action here */ }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.plus), // Replace 'other_icon' with your actual icon resource
+                    contentDescription = "Right Icon",
+                    tint = Color.White
+                )
+            }
+
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        YouTubeVideoPlayer(videoId = YouTubeUrlParser.parse(exercise.videoUrl))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 2.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF3e3e42))
+        ) {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                                startY = 220f,
+                                endY = Float.POSITIVE_INFINITY
+                            )
+                        )
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                ) {
+                    Text(
+                        text = exercise.description,
+                        color = Color.White,
+                        textAlign = TextAlign.Justify,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
         Image(
             painter = rememberAsyncImagePainter(exercise.imageUrl),
             contentDescription = "Exercise Image",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
         )
-        Text(text = exercise.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-        Text(text = exercise.description)
+    }
+}
+
+
+object YouTubeUrlParser {
+    fun parse(url: String): String {
+        // Regex to extract the YouTube video ID from a URL
+        return Regex("v=([a-zA-Z0-9_\\-]+)").find(url)?.groups?.get(1)?.value ?: ""
     }
 }

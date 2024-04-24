@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.kotlinx.coroutines.android)
     implementation (libs.androidx.runtime.livedata)
+    implementation(libs.core)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.squareup.retrofit)
     implementation(libs.retrofit2.converter.gson)

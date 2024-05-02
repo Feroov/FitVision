@@ -21,7 +21,7 @@ sealed class BottomBarScreen(
 
     object MoodTracking : BottomBarScreen(
         route = "moodtracking",
-        title = "Mood Tracking",
+        title = "Mood",
         icon = Icons.Default.Person
     )
 
@@ -31,9 +31,9 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Favorite
     )
 
-    object Analytics : BottomBarScreen(
-        route = "analytics",
-        title = "Analytics",
+    object DietAndCalorieTracking : BottomBarScreen(
+        route = "tracking",
+        title = "Tracking",
         icon = Icons.Default.List
     )
 

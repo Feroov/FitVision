@@ -51,15 +51,20 @@ android {
 }
 
 dependencies {
+    val lifecycle_version = "2.7.0"
     val room_version = "2.6.1"
 
+    // LiveData and ViewModel
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+
+    // Room Database
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")  // Ensure this is added for Kotlin extension functions
+    ksp("androidx.room:room-compiler:$room_version")  // Use KSP for Room compiler instead of annotationProcessor
+
+    // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
-    // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:$room_version")
-    implementation(libs.androidx.lifecycle.livedata.ktx.v241)
-    implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

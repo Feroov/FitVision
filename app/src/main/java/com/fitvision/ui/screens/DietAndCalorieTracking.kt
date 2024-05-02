@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
-fun Analytics() {
+fun DietAndCalorieTracking() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -22,7 +22,7 @@ fun Analytics() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "ANALYTICS",
+            text = "Tracking",
             fontSize = MaterialTheme.typography.headlineMedium.fontSize,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -33,5 +33,5 @@ fun Analytics() {
 @Composable
 @Preview
 fun AnalyticsPreview() {
-    Analytics()
+    DietAndCalorieTracking()
 }

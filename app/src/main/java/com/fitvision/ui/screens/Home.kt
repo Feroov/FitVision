@@ -48,11 +48,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.fitvision.models.FavoriteExercise
 import com.fitvision.util.YouTubeVideoPlayer
 import kotlinx.coroutines.delay
 
@@ -217,91 +224,123 @@ fun ExerciseCard(exercise: Exercise, navigateToDetail: () -> Unit) {
 }
 
 @Composable
-fun DetailScreen(navController: NavHostController, exercise: Exercise) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF212121))
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+fun DetailScreen(navController: NavHostController, exercise: Exercise, viewModel: ExerciseViewModel) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val favoriteEvent by viewModel.favoriteAdded.collectAsState(initial = "")
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.back),
-                    contentDescription = "Back",
-                    tint = Color.White
-                )
-            }
-            Spacer(Modifier.weight(1f))
-            Text(
-                text = exercise.name,
-                color = Color.White,
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(3f)
+    val favoriteExercise = FavoriteExercise(
+        id = exercise.id,
+        name = exercise.name,
+        category = exercise.category,
+        description = exercise.description,
+        imageUrl = exercise.imageUrl,
+        videoUrl = exercise.videoUrl
+    )
+
+    LaunchedEffect(favoriteEvent) {
+        if (favoriteEvent.isNotEmpty()) {
+            snackbarHostState.showSnackbar(
+                message = favoriteEvent,
+                duration = SnackbarDuration.Short
             )
-            Spacer(Modifier.weight(1f))
-            IconButton(onClick = { /* handle right icon click action here */ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.plus), // Replace 'other_icon' with your actual icon resource
-                    contentDescription = "Right Icon",
-                    tint = Color.White
-                )
-            }
-
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        YouTubeVideoPlayer(videoId = YouTubeUrlParser.parse(exercise.videoUrl))
-        Spacer(modifier = Modifier.height(16.dp))
+    }
 
-        Card(
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 2.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF3e3e42))
+                .matchParentSize()
+                .background(Color(0xFF212121))
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
-                                startY = 220f,
-                                endY = Float.POSITIVE_INFINITY
-                            )
-                        )
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
-                ) {
-                    Text(
-                        text = exercise.description,
-                        color = Color.White,
-                        textAlign = TextAlign.Justify,
-                        modifier = Modifier.fillMaxWidth()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.back),
+                        contentDescription = "Back",
+                        tint = Color.White
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                Spacer(Modifier.weight(1f))
+                Text(
+                    text = exercise.name,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(3f)
+                )
+                Spacer(Modifier.weight(1f))
+                IconButton(onClick = {
+                    viewModel.addFavorite(favoriteExercise)
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Add to Favorites",
+                        tint = Color.White
+                    )
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            YouTubeVideoPlayer(videoId = YouTubeUrlParser.parse(exercise.videoUrl))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF3e3e42))
+            ) {
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(
+                        modifier = Modifier
+                            .matchParentSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                                    startY = 220f,
+                                    endY = Float.POSITIVE_INFINITY
+                                )
+                            )
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 10.dp)
+                    ) {
+                        Text(
+                            text = exercise.description,
+                            color = Color.White,
+                            textAlign = TextAlign.Justify,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Image(
+                painter = rememberAsyncImagePainter(exercise.imageUrl),
+                contentDescription = "Exercise Image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Image(
-            painter = rememberAsyncImagePainter(exercise.imageUrl),
-            contentDescription = "Exercise Image",
+        Box(
             modifier = Modifier
+                .align(Alignment.TopCenter)
                 .fillMaxWidth()
-                .height(200.dp)
-        )
+                .padding(50.dp)
+        ) {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     }
 }
 

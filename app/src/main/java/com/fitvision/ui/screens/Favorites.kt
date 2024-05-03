@@ -33,10 +33,9 @@ import com.fitvision.models.FavoriteExercise
 
 
 @Composable
-fun FavoritesScreen(viewModel: ExerciseViewModel) {
+fun Favorites(viewModel: ExerciseViewModel) {
     val favorites by viewModel.favoritesFlow.collectAsState(initial = listOf())
 
-    // Apply the background to the whole screen
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -31,13 +31,11 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Favorite
     )
 
-    object DietAndCalorieTracking : BottomBarScreen(
+    object CalorieTracking : BottomBarScreen(
         route = "tracking",
         title = "Tracking",
         icon = Icons.Default.List
     )
-
-
     object Detail : BottomBarScreen(
         route = "detail/{exerciseId}",
         title = "Detail",

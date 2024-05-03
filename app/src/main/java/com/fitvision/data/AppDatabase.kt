@@ -7,13 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.fitvision.models.FavoriteExercise
 import com.fitvision.models.MoodEntry
+import com.fitvision.models.AddedFood
 import com.fitvision.util.Converters
 
-@Database(entities = [FavoriteExercise::class, MoodEntry::class], version = 2, exportSchema = false)
+@Database(entities = [FavoriteExercise::class, MoodEntry::class, AddedFood::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
     abstract fun moodDao(): MoodDao
+    abstract fun foodDao(): FoodDao
 
     companion object {
         @Volatile
@@ -25,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "fitvision_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

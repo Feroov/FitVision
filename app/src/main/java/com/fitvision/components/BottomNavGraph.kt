@@ -9,12 +9,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.fitvision.models.ExerciseViewModel
+import com.fitvision.models.FoodViewModel
 import com.fitvision.models.MoodViewModel
-import com.fitvision.ui.screens.DietAndCalorieTracking
+import com.fitvision.ui.screens.CalorieTracking
 import com.fitvision.ui.screens.DetailScreen
+import com.fitvision.ui.screens.DietTracking
 import com.fitvision.ui.screens.HomeScreen
 import com.fitvision.ui.screens.MoodTrack
-import com.fitvision.ui.screens.FavoritesScreen
+import com.fitvision.ui.screens.Favorites
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
@@ -35,11 +37,18 @@ fun BottomNavGraph(navController: NavHostController) {
 
         composable(route = BottomBarScreen.Favorites.route) {
             val exerciseViewModel: ExerciseViewModel = viewModel()
-            FavoritesScreen(viewModel = exerciseViewModel)
+            Favorites(viewModel = exerciseViewModel)
         }
 
-        composable(route = BottomBarScreen.DietAndCalorieTracking.route) {
-            DietAndCalorieTracking()
+        composable(route = BottomBarScreen.CalorieTracking.route) {
+            val viewModel: MoodViewModel = viewModel()
+            val foodViewModel: FoodViewModel = viewModel()
+            CalorieTracking(viewModel, navController, foodViewModel)
+        }
+
+        composable(route = "dietTracking") {
+            val foodViewModel: FoodViewModel = viewModel()
+            DietTracking(foodViewModel)
         }
 
         composable(

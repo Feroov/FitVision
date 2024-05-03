@@ -5,8 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.fitvision.data.AppDatabase
 import com.fitvision.network.RetrofitInstance
-import com.fitvision.data.FavoritesDB
 import com.fitvision.data.ExerciseDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class ExerciseViewModel(application: Application) : AndroidViewModel(application) {
     private val _exercises = MutableLiveData<List<Exercise>>()
     val exercises: LiveData<List<Exercise>> = _exercises
-    private val dao: ExerciseDao = FavoritesDB.getDatabase(application).exerciseDao()
+    private val dao: ExerciseDao = AppDatabase.getDatabase(application).exerciseDao()
     private val _favoriteAdded = MutableSharedFlow<String>()
     val favoriteAdded = _favoriteAdded.asSharedFlow()
 

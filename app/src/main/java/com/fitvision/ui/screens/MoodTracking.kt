@@ -46,7 +46,7 @@ fun MoodTrack(viewModel: MoodViewModel) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "How was your workout session today?",
+                    "How was your workout session?",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,

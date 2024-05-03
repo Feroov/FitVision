@@ -29,9 +29,3 @@ fun DietAndCalorieTracking() {
         )
     }
 }
-
-@Composable
-@Preview
-fun AnalyticsPreview() {
-    DietAndCalorieTracking()
-}

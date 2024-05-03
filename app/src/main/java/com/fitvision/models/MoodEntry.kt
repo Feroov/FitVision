@@ -9,5 +9,6 @@ data class MoodEntry(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val mood: String,
     val description: String?,
-    val date: Date
+    val date: Date,
+    val calories: Int
 )

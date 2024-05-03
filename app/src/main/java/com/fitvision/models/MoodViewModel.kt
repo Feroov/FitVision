@@ -12,7 +12,13 @@ class MoodViewModel(application: Application) : AndroidViewModel(application) {
     private val moodDao = AppDatabase.getDatabase(application).moodDao()
 
     fun insertMood(mood: String, description: String) {
-        val moodEntry = MoodEntry(mood = mood, description = description, date = Date())
+        val calories = when (mood) {
+            "Awesome" -> (360..532).random()
+            "Okay" -> (210..320).random()
+            "Bad" -> (160..190).random()
+            else -> 0
+        }
+        val moodEntry = MoodEntry(mood = mood, description = description, date = Date(), calories = calories)
         viewModelScope.launch {
             moodDao.insertMood(moodEntry)
         }

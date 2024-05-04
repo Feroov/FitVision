@@ -280,6 +280,7 @@ fun DetailScreen(navController: NavHostController, exercise: Exercise, viewModel
                 }) {
                     Icon(
                         imageVector = Icons.Default.Favorite,
+                        modifier = Modifier.size(36.dp),
                         contentDescription = "Add to Favorites",
                         tint = Color.White
                     )

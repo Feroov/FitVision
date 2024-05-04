@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -83,7 +84,7 @@ fun MoodTrack(viewModel: MoodViewModel) {
 fun MoodButton(mood: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF76ABAE)),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .fillMaxWidth()
@@ -102,7 +103,6 @@ fun MoodEntryCard(moodEntry: MoodEntry, onRemove: () -> Unit) {
 
     LaunchedEffect(moodEntry.mood) {
         if (moodEntry.mood == "Awesome") {
-            // Animate scale from 0.8 to 1.2 and back to 1
             scale.animateTo(1.2f, animationSpec = tween(durationMillis = 500))
             scale.animateTo(1f, animationSpec = tween(durationMillis = 500))
         }
@@ -114,29 +114,46 @@ fun MoodEntryCard(moodEntry: MoodEntry, onRemove: () -> Unit) {
             .padding(vertical = 9.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF76ABAE))
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(26.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = moodEntry.mood,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    modifier = Modifier.graphicsLayer(
-                        scaleX = scale.value,
-                        scaleY = scale.value
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                            startY = 220f,
+                            endY = Float.POSITIVE_INFINITY
+                        )
                     )
-                )
-                moodEntry.description?.let {
-                    Text(it, color = Color.Black, fontSize = 14.sp)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(26.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = moodEntry.mood,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        modifier = Modifier.graphicsLayer(
+                            scaleX = scale.value,
+                            scaleY = scale.value
+                        )
+                    )
+                    moodEntry.description?.let {
+                        Text(it, color = Color.Black, fontSize = 14.sp)
+                    }
                 }
-            }
-            IconButton(onClick = onRemove) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
+                Button(
+                    onClick = onRemove,
+                    modifier = Modifier.size(40.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Remove")
+                }
             }
         }
     }

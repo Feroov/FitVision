@@ -2,7 +2,9 @@ package com.fitvision.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -22,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -73,37 +77,50 @@ fun FavoriteExerciseCard(favorite: FavoriteExercise, onRemove: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF76ABAE))
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Left side: Image and Text
-            Image(
-                painter = rememberAsyncImagePainter(favorite.imageUrl),
-                contentDescription = "Favorite Exercise Image",
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
                 modifier = Modifier
-                    .size(150.dp, 150.dp)
-                    .padding(end = 16.dp),
-                contentScale = ContentScale.FillWidth
+                    .matchParentSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                            startY = 400f,
+                            endY = Float.POSITIVE_INFINITY
+                        )
+                    )
             )
-
-            Column(
+            Row(
                 modifier = Modifier
-                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = favorite.name, fontWeight = FontWeight.Bold, color = Color.Black)
-                Text(text = favorite.category, color = Color.Black)
-            }
-
-            // Right side: Delete Button
-            IconButton(onClick = onRemove) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "Remove from Favorites",
-                    tint = Color.Red
+                // Left side: Image and Text
+                Image(
+                    painter = rememberAsyncImagePainter(favorite.imageUrl),
+                    contentDescription = "Favorite Exercise Image",
+                    modifier = Modifier
+                        .size(150.dp, 150.dp)
+                        .padding(end = 16.dp),
+                    contentScale = ContentScale.FillWidth
                 )
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    Text(text = favorite.name, fontWeight = FontWeight.Bold, color = Color.Black)
+                    Text(text = favorite.category, color = Color.Black)
+                }
+
+                Button(
+                    onClick = onRemove,
+                    modifier = Modifier
+                        .size(40.dp),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Icon(Icons.Default.Delete, contentDescription = "Remove")
+                }
             }
         }
     }

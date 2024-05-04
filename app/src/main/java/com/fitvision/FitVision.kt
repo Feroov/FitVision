@@ -18,3 +18,4 @@ class FitVision : ComponentActivity() {
     }
 }
 
+

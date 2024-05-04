@@ -31,6 +31,11 @@ class FoodViewModel(application: Application) : AndroidViewModel(application) {
         updateCaloriesWhenFoodsChange()
     }
 
+    fun getFoodById(foodId: Int): Food? {
+        return _availableFoods.value?.find { it.id == foodId }
+    }
+
+
     private fun loadFoods() {
         viewModelScope.launch {
             val response = retrofitService.getFoods()
@@ -50,11 +55,14 @@ class FoodViewModel(application: Application) : AndroidViewModel(application) {
 
     fun removeFoodFromDiet(foodId: Int) {
         viewModelScope.launch {
-            foodDao.delete(foodId)
+            val allAddedFoods = foodDao.getAllAddedFoodsNonLive()
+            val foodToRemove = allAddedFoods.firstOrNull { it.foodId == foodId }
+            if (foodToRemove != null) {
+                foodDao.deleteSingle(foodToRemove.id)
+            }
         }
     }
 
-    // Observing changes in added foods and updating total calories accordingly
     private fun updateCaloriesWhenFoodsChange() {
         _addedFoods.observeForever { foods ->
             val totalCalories = foods.sumOf { it.calories }

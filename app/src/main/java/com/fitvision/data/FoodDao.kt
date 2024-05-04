@@ -14,6 +14,12 @@ interface FoodDao {
     @Query("SELECT * FROM added_foods")
     fun getAllAddedFoods(): LiveData<List<AddedFood>>
 
+    @Query("SELECT * FROM added_foods")
+    suspend fun getAllAddedFoodsNonLive(): List<AddedFood>
+
+    @Query("DELETE FROM added_foods WHERE id = :id")
+    suspend fun deleteSingle(id: Int)
+
     @Query("DELETE FROM added_foods WHERE foodId = :foodId")
     suspend fun delete(foodId: Int)
 

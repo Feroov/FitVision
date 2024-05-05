@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -53,14 +54,16 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
             textAlign = TextAlign.Center
         )
         LazyColumn(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .padding(bottom = 0.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(moodEntries) { entry ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
+                        .padding(horizontal = 28.dp),
                     colors = CardDefaults.cardColors(containerColor = Color(0xFF76ABAE))
                 ) {
                     Box(modifier = Modifier.fillMaxWidth()) {
@@ -77,7 +80,7 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
                         )
                         Box(
                             contentAlignment = Alignment.Center,
-                            modifier = Modifier.padding(31.dp)
+                            modifier = Modifier.padding(21.dp)
                         ) {
                             Text(
                                 text = buildAnnotatedString {
@@ -94,29 +97,34 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
                         }
                     }
                 }
-
             }
         }
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 70.dp),
+                .padding(vertical = 40.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFF333333))
         ) {
             Column(modifier = Modifier.padding(26.dp)) {
                 Button(
                     onClick = { navController.navigate("moodtracking") },
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("Mood Tracking", color = Color.Black, fontSize = 24.sp)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = { navController.navigate("dietTracking") },
-                    modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(8.dp)
                 ) {
                     Text("Diet Tracking", color = Color.Black, fontSize = 24.sp)
                 }
@@ -124,7 +132,6 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
         }
     }
 }
-
 
 fun formatDateString(dateString: String): String {
     val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)

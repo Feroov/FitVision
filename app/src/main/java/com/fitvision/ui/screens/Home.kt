@@ -12,6 +12,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,10 +78,8 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
         R.drawable.image4
     )
 
-    // Index to keep track of the current image in the carousel
     var currentIndex by remember { mutableStateOf(0) }
 
-    // Update the current index in the carousel
     LaunchedEffect(Unit) {
         while (true) {
             delay(3000)
@@ -88,13 +87,11 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
         }
     }
 
-    // Create a list of filtered exercises based on the search text
     val filteredExercises = exercises.filter {
         searchText.isEmpty() || it.name.contains(searchText, ignoreCase = true) ||
                 it.category.contains(searchText, ignoreCase = true)
     }
 
-    // Define navigation bar height for padding at the bottom of the LazyColumn
     val navigationBarHeight = 90.dp
 
     Column(
@@ -108,7 +105,7 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
             contentDescription = "FitVision Logo",
             modifier = Modifier
                 .fillMaxWidth()
-                .size(width = 100.dp, height = 90.dp)
+                .size(width = 100.dp, height = 120.dp)
         )
 
         // Carousel of images
@@ -129,7 +126,8 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(16f / 7f),
+                    .aspectRatio(16f / 7f)
+                    .border(width = 4.dp, color = Color.Black),
                 contentScale = ContentScale.FillWidth
             )
         }
@@ -317,7 +315,8 @@ fun DetailScreen(navController: NavHostController, exercise: Exercise, viewModel
                             text = exercise.description,
                             color = Color.White,
                             textAlign = TextAlign.Justify,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            fontSize = 18.sp
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -348,7 +347,7 @@ fun DetailScreen(navController: NavHostController, exercise: Exercise, viewModel
 
 object YouTubeUrlParser {
     fun parse(url: String): String {
-        // Regex to extract the YouTube video ID from a URL
+        // We simply extract the YouTube video id from a url
         return Regex("v=([a-zA-Z0-9_\\-]+)").find(url)?.groups?.get(1)?.value ?: ""
     }
 }

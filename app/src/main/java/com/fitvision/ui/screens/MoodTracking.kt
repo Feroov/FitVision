@@ -58,27 +58,33 @@ fun MoodTrack(viewModel: MoodViewModel, navController: NavController) {
 
             Text(
                 "How was the gym?",
-                fontSize = 23.sp,
+                fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 24.dp),
+                    .weight(1f),
                 textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.size(48.dp))
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.fillMaxWidth()
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFF333333)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
-            listOf("Awesome", "Okay", "Bad").forEach { mood ->
-                MoodButton(mood, onClick = {
-                    viewModel.insertMood(mood, "Logged on ${SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Date())}")
-                })
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                listOf("Awesome", "Okay", "Bad").forEach { mood ->
+                    MoodButton(mood, onClick = {
+                        viewModel.insertMood(mood, "Logged on ${SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Date())}")
+                    })
+                }
             }
         }
 
@@ -96,6 +102,7 @@ fun MoodTrack(viewModel: MoodViewModel, navController: NavController) {
 
 @Composable
 fun MoodButton(mood: String, onClick: () -> Unit) {
+
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
@@ -103,9 +110,9 @@ fun MoodButton(mood: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .padding(vertical = 5.dp)
+            .padding(vertical = 4.dp, horizontal = 10.dp)
     ) {
-        Text(mood, color = Color.Black, fontSize = 26.sp)
+        Text(mood, color = Color.Black, fontSize = 27.sp)
     }
 }
 
@@ -140,6 +147,7 @@ fun MoodEntryCard(moodEntry: MoodEntry, onRemove: () -> Unit) {
                         )
                     )
             )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

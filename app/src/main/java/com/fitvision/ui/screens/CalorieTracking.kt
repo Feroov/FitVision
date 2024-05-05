@@ -36,7 +36,7 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
     ) {
         Text(
             text = "Calorie Tracking",
-            fontSize = 24.sp,
+            fontSize = 40.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier
@@ -57,8 +57,6 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(moodEntries) { entry ->
-                val textColor = if (entry.calories >= 500) Color.Red else Color.Black // Highlight if calories burned are 500 or more
-
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -89,7 +87,7 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
                                     }
                                 },
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = textColor,
+                                color = Color.Black,
                                 fontSize = 20.sp,
                                 textAlign = TextAlign.Center
                             )
@@ -106,13 +104,21 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
                 .padding(vertical = 70.dp),
             colors = CardDefaults.cardColors(containerColor = Color(0xFF333333))
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(26.dp)) {
                 Button(
-                    onClick = { navController.navigate("dietTracking") },
-                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { navController.navigate("moodtracking") },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White)
                 ) {
-                    Text("Diet Tracking", color = Color.Black)
+                    Text("Mood Tracking", color = Color.Black, fontSize = 24.sp)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = { navController.navigate("dietTracking") },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+                ) {
+                    Text("Diet Tracking", color = Color.Black, fontSize = 24.sp)
                 }
             }
         }

@@ -6,6 +6,7 @@ import retrofit2.Response
 interface ApiService {
     @GET("fitvision.json")
     suspend fun getExercises(): Response<ExerciseList>
+
     @GET("food.json")
     suspend fun getFoods(): Response<FoodList>
 }

@@ -20,6 +20,7 @@ import com.fitvision.ui.screens.Favorites
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
+
     NavHost(
         navController = navController,
         startDestination = BottomBarScreen.Home.route
@@ -32,7 +33,7 @@ fun BottomNavGraph(navController: NavHostController) {
         }
         composable(route = BottomBarScreen.MoodTracking.route) {
             val moodViewModel: MoodViewModel = viewModel()
-            MoodTrack(viewModel = moodViewModel)
+            MoodTrack(viewModel = moodViewModel, navController)
         }
 
         composable(route = BottomBarScreen.Favorites.route) {
@@ -48,7 +49,7 @@ fun BottomNavGraph(navController: NavHostController) {
 
         composable(route = "dietTracking") {
             val foodViewModel: FoodViewModel = viewModel()
-            DietTracking(foodViewModel)
+            DietTracking(foodViewModel, navController)
         }
 
         composable(
@@ -64,3 +65,4 @@ fun BottomNavGraph(navController: NavHostController) {
         }
     }
 }
+

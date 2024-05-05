@@ -7,7 +7,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,13 +22,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.fitvision.models.MoodEntry
 import com.fitvision.models.MoodViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @Composable
-fun MoodTrack(viewModel: MoodViewModel) {
+fun MoodTrack(viewModel: MoodViewModel, navController: NavController) {
     val moodEntries by viewModel.getAllMoods().collectAsState(initial = listOf())
 
     Column(
@@ -35,36 +39,46 @@ fun MoodTrack(viewModel: MoodViewModel) {
             .background(Color(0xFF212121))
             .padding(16.dp)
     ) {
-        Card(
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF424242))
+                .padding(bottom = 16.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            IconButton(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.size(48.dp)
             ) {
-                Text(
-                    "How was your workout session?",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White
                 )
-                Spacer(modifier = Modifier.height(10.dp))
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    listOf("Awesome", "Okay", "Bad").forEach { mood ->
-                        MoodButton(mood, onClick = {
-                            viewModel.insertMood(mood, "Logged on ${SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Date())}")
-                        })
-                    }
-                }
+            }
+
+            Text(
+                "How was the gym?",
+                fontSize = 23.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 24.dp),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.size(48.dp))
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            listOf("Awesome", "Okay", "Bad").forEach { mood ->
+                MoodButton(mood, onClick = {
+                    viewModel.insertMood(mood, "Logged on ${SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(Date())}")
+                })
             }
         }
 
@@ -147,13 +161,19 @@ fun MoodEntryCard(moodEntry: MoodEntry, onRemove: () -> Unit) {
                         Text(it, color = Color.Black, fontSize = 14.sp)
                     }
                 }
-                Button(
+                IconButton(
                     onClick = onRemove,
-                    modifier = Modifier.size(40.dp),
-                    contentPadding = PaddingValues(0.dp)
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(Color(0xFF212121), CircleShape)
                 ) {
-                    Icon(Icons.Default.Delete, contentDescription = "Remove")
+                    Icon(
+                        Icons.Default.Delete,
+                        contentDescription = "Remove",
+                        tint = Color.White
+                    )
                 }
+
             }
         }
     }

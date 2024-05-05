@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -37,13 +39,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.fitvision.models.AddedFood
 import com.fitvision.models.Food
 import com.fitvision.models.FoodViewModel
 
 @Composable
-fun DietTracking(viewModel: FoodViewModel) {
+fun DietTracking(viewModel: FoodViewModel, navController: NavController) {
     val availableFoods by viewModel.availableFoods.observeAsState(listOf())
     val totalCaloriesConsumed by viewModel.totalCaloriesConsumed.observeAsState(0)
     val addedFoods by viewModel.addedFoods.observeAsState(listOf())
@@ -68,6 +71,17 @@ fun DietTracking(viewModel: FoodViewModel) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
+            IconButton(
+                onClick = { navController.navigate("tracking") },
+                modifier = Modifier.size(24.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White
+                )
+            }
+            Spacer(Modifier.width(16.dp))
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -75,7 +89,7 @@ fun DietTracking(viewModel: FoodViewModel) {
             ) {
                 Text(
                     "Total Calories Consumed",
-                    fontSize = 18.sp,
+                    fontSize = 23.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -88,6 +102,7 @@ fun DietTracking(viewModel: FoodViewModel) {
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
+            Spacer(Modifier.size(33.dp))
         }
         AddedFoodsSummary(addedFoods, viewModel)
         LazyColumn(
@@ -198,22 +213,22 @@ fun FoodCard(food: Food, onAddClick: () -> Unit, onRemoveClick: () -> Unit) {
                         .padding(end = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(
+                    IconButton(
                         onClick = onAddClick,
                         modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(40.dp),
-                        contentPadding = PaddingValues(0.dp)
+                            .size(48.dp)
+                            .background(Color(0xFF212121), CircleShape)
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Add")
+                        Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
                     }
-                    Button(
+                    Spacer(Modifier.width(8.dp))
+                    IconButton(
                         onClick = onRemoveClick,
                         modifier = Modifier
-                            .size(40.dp),
-                        contentPadding = PaddingValues(0.dp)
+                            .size(48.dp)
+                            .background(Color(0xFF212121), CircleShape)
                     ) {
-                        Icon(Icons.Default.Delete, contentDescription = "Remove")
+                        Icon(Icons.Default.Delete, contentDescription = "Remove", tint = Color.White)
                     }
                 }
             }

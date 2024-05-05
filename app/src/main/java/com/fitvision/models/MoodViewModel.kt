@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.*
 
+// ViewModel class for managing mood data
 class MoodViewModel(application: Application) : AndroidViewModel(application) {
     private val moodDao = AppDatabase.getDatabase(application).moodDao()
 
+    // Function to insert a new mood entry
     fun insertMood(mood: String, description: String) {
         val calories = when (mood) {
             "Awesome" -> (360..532).random()
@@ -24,10 +26,12 @@ class MoodViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // Function to get all mood entries as Flow
     fun getAllMoods(): Flow<List<MoodEntry>> {
         return moodDao.getAllMoods()
     }
 
+    // Function to delete a mood entry
     fun deleteMood(moodEntry: MoodEntry) {
         viewModelScope.launch {
             moodDao.deleteMood(moodEntry)

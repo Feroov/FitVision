@@ -43,5 +43,4 @@ sealed class BottomBarScreen(
     ) {
         fun createRoute(exerciseId: Int) = route.replace("{exerciseId}", exerciseId.toString())
     }
-
 }

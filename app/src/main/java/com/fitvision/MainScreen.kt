@@ -33,6 +33,7 @@ fun MainScreen() {
     }
 }
 
+// Composable function to display the bottom navigation bar.
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
@@ -54,6 +55,7 @@ fun BottomBar(navController: NavHostController) {
     }
 }
 
+// Composable function to add items to the bottom navigation bar
 @Composable
 fun RowScope.AddItem(
     screen: BottomBarScreen,
@@ -95,4 +97,3 @@ fun RowScope.AddItem(
         modifier = Modifier.background(Color.Transparent)
     )
 }
-

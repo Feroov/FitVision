@@ -99,7 +99,6 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
             .fillMaxSize()
             .background(Color(0xFF212121))
     ) {
-        // Logo image
         Image(
             painter = painterResource(id = R.drawable.fitvisiontransparent),
             contentDescription = "FitVision Logo",
@@ -170,7 +169,7 @@ fun HomeScreen(viewModel: ExerciseViewModel, navController: NavHostController) {
     }
 }
 
-
+// Composable function for exercise card
 @Composable
 fun ExerciseCard(exercise: Exercise, navigateToDetail: () -> Unit) {
     Card(
@@ -199,7 +198,6 @@ fun ExerciseCard(exercise: Exercise, navigateToDetail: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Left side - Text content
                 Column(
                     modifier = Modifier
                         .weight(1f)
@@ -208,7 +206,6 @@ fun ExerciseCard(exercise: Exercise, navigateToDetail: () -> Unit) {
                     Text(text = exercise.category)
                 }
 
-                // Right side - Image
                 Image(
                     painter = rememberAsyncImagePainter(model = exercise.imageUrl),
                     contentDescription = "Exercise Image",
@@ -221,6 +218,7 @@ fun ExerciseCard(exercise: Exercise, navigateToDetail: () -> Unit) {
     }
 }
 
+// Composable function for detail screen
 @Composable
 fun DetailScreen(navController: NavHostController, exercise: Exercise, viewModel: ExerciseViewModel) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -344,10 +342,10 @@ fun DetailScreen(navController: NavHostController, exercise: Exercise, viewModel
     }
 }
 
-
+// We simply extract the YouTube video id from a url
 object YouTubeUrlParser {
     fun parse(url: String): String {
-        // We simply extract the YouTube video id from a url
+
         return Regex("v=([a-zA-Z0-9_\\-]+)").find(url)?.groups?.get(1)?.value ?: ""
     }
 }

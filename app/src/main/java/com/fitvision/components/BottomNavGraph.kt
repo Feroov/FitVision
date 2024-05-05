@@ -1,6 +1,5 @@
 package com.fitvision.components
 
-
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -18,6 +17,7 @@ import com.fitvision.ui.screens.HomeScreen
 import com.fitvision.ui.screens.MoodTrack
 import com.fitvision.ui.screens.Favorites
 
+// Composable function for the bottom navigation graph
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
 

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
+// ViewModel class for managing exercise data
 class ExerciseViewModel(application: Application) : AndroidViewModel(application) {
     private val _exercises = MutableLiveData<List<Exercise>>()
     val exercises: LiveData<List<Exercise>> = _exercises
@@ -27,6 +28,7 @@ class ExerciseViewModel(application: Application) : AndroidViewModel(application
         fetchExercises()
     }
 
+    // Function to fetch exercises from Retrofit
     private fun fetchExercises() {
         viewModelScope.launch {
             val response = RetrofitInstance.api.getExercises()
@@ -36,17 +38,20 @@ class ExerciseViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    // Function to get exercise by ID
     fun getExerciseById(id: Int): Exercise? {
         return exercises.value?.find { it.id == id }
     }
 
+    // Function to add a favorite exercise
     fun addFavorite(favoriteExercise: FavoriteExercise) {
         viewModelScope.launch {
             dao.insertFavorite(favoriteExercise)
-            _favoriteAdded.emit("Added to favorites!") // Emitting a success message
+            _favoriteAdded.emit("Added to favorites!")
         }
     }
 
+    // Function to remove a favorite exercise
     fun removeFavorite(favoriteExercise: FavoriteExercise) {
         viewModelScope.launch {
             dao.deleteFavorite(favoriteExercise)

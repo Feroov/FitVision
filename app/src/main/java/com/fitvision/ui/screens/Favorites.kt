@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -42,7 +40,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.fitvision.models.ExerciseViewModel
 import com.fitvision.models.FavoriteExercise
 
-
+// Composable function to display favorites
 @Composable
 fun Favorites(viewModel: ExerciseViewModel) {
     val favorites by viewModel.favoritesFlow.collectAsState(initial = listOf())
@@ -75,7 +73,7 @@ fun Favorites(viewModel: ExerciseViewModel) {
     }
 }
 
-
+// Composable function to display a single favorite exercise
 @Composable
 fun FavoriteExerciseCard(favorite: FavoriteExercise, onRemove: () -> Unit) {
     val context = LocalContext.current

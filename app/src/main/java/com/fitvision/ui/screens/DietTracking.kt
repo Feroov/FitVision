@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -45,12 +43,14 @@ import com.fitvision.models.AddedFood
 import com.fitvision.models.Food
 import com.fitvision.models.FoodViewModel
 
+// Composable function for displaying diet tracking screen
 @Composable
 fun DietTracking(viewModel: FoodViewModel, navController: NavController) {
     val availableFoods by viewModel.availableFoods.observeAsState(listOf())
     val totalCaloriesConsumed by viewModel.totalCaloriesConsumed.observeAsState(0)
     val addedFoods by viewModel.addedFoods.observeAsState(listOf())
 
+    // Determining text color based on total calories consumed
     val textColor = when {
         totalCaloriesConsumed <= 2200 -> Color(0xFFFFFFE0)
         totalCaloriesConsumed <= 2400 -> Color(0xFFFFFF00)
@@ -120,7 +120,7 @@ fun DietTracking(viewModel: FoodViewModel, navController: NavController) {
     }
 }
 
-
+// Composable function for displaying summary of added foods
 @Composable
 fun AddedFoodsSummary(addedFoods: List<AddedFood>, viewModel: FoodViewModel) {
     val groupedFoods = addedFoods.groupBy { it.foodId }
@@ -169,8 +169,7 @@ fun AddedFoodsSummary(addedFoods: List<AddedFood>, viewModel: FoodViewModel) {
     }
 }
 
-
-
+// Composable function for displaying food card
 @Composable
 fun FoodCard(food: Food, onAddClick: () -> Unit, onRemoveClick: () -> Unit) {
     Card(
@@ -235,5 +234,3 @@ fun FoodCard(food: Food, onAddClick: () -> Unit, onRemoveClick: () -> Unit) {
         }
     }
 }
-
-

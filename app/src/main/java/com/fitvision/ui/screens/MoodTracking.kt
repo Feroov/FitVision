@@ -28,7 +28,7 @@ import com.fitvision.models.MoodViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+// Composable function to display the MoodTrack screen
 @Composable
 fun MoodTrack(viewModel: MoodViewModel, navController: NavController) {
     val moodEntries by viewModel.getAllMoods().collectAsState(initial = listOf())
@@ -100,6 +100,7 @@ fun MoodTrack(viewModel: MoodViewModel, navController: NavController) {
     }
 }
 
+// Composable function to display a mood button
 @Composable
 fun MoodButton(mood: String, onClick: () -> Unit) {
 
@@ -116,10 +117,11 @@ fun MoodButton(mood: String, onClick: () -> Unit) {
     }
 }
 
+// Composable function to display a mood entry card
 @SuppressLint("RememberReturnType")
 @Composable
 fun MoodEntryCard(moodEntry: MoodEntry, onRemove: () -> Unit) {
-    // Animation state
+
     val scale = remember { Animatable(1f) }
 
     LaunchedEffect(moodEntry.mood) {
@@ -181,7 +183,6 @@ fun MoodEntryCard(moodEntry: MoodEntry, onRemove: () -> Unit) {
                         tint = Color.White
                     )
                 }
-
             }
         }
     }

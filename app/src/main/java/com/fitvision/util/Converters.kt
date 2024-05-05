@@ -1,4 +1,5 @@
 package com.fitvision.util
+
 import androidx.room.TypeConverter
 import java.util.Date
 

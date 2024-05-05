@@ -24,6 +24,7 @@ import com.fitvision.models.FoodViewModel
 import com.fitvision.models.MoodViewModel
 import java.util.Locale
 
+// Composable function for displaying calorie tracking screen
 @Composable
 fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, foodViewModel: FoodViewModel) {
     val moodEntries by viewModel.getAllMoods().collectAsState(initial = listOf())
@@ -53,6 +54,7 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             textAlign = TextAlign.Center
         )
+        // List of mood entries
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
@@ -100,6 +102,7 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
             }
         }
 
+        // Navigation buttons
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -133,6 +136,7 @@ fun CalorieTracking(viewModel: MoodViewModel, navController: NavHostController, 
     }
 }
 
+// Function to format date string
 fun formatDateString(dateString: String): String {
     val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
     val date = sdf.parse(dateString)
